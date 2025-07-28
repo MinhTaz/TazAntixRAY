@@ -1,6 +1,6 @@
-<a href> <img src="https://raw.githubusercontent.com/TazukiVN/TazAntixRAY/master/minecraft_title.png"> </a>
+<a href> <img src="[https://raw.githubusercontent.com/TazukiVN/TazAntixRAY/master/minecraft_title.png](https://www.shutterstock.com/image-illustration/field-flowing-stream-beautiful-natural-600nw-2428964117.jpg)"> </a>
 
-# TazAntixRAY - Advanced Folia Edition
+# TazAntixRAY - Advanced Folia/Spigot/Paper Edition
 
 An advanced Anti-XRay plugin for Minecraft with full Folia support and region-based threading optimization. **Developed by TazukiVN**
 
