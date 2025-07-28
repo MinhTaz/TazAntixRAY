@@ -1,0 +1,58 @@
+name: TazAntixRAY
+version: '1.0.1'
+main: com.tazukivn.tazantixray.TazAntixRAYPlugin
+api-version: '1.20'
+folia-supported: true
+load: STARTUP
+depend: [packetevents]
+authors: [TazukiVN]
+description: Advanced Anti-XRay plugin for Folia with region-based threading support
+website: https://github.com/TazukiVN/TazAntixRAY
+# Optional: Add loadbefore if another plugin might interact with PacketEvents early
+# loadbefore: []
+# Optional: Add softdepend if you want to use features from another plugin if it's present
+# softdepend: []
+
+commands:
+# You could add a command for debugging or manual refresh if needed
+# ylevelhider:
+#   description: Main command for YLevelHider.
+#   usage: /ylevelhider <args>
+#   permission: ylevelhider.admin
+  tazantixray:
+    description: Main command for TazAntixRAY plugin.
+    usage: /tazantixray <debug|reload|world> [args]
+    permission: tazantixray.admin
+    aliases: [tar, antixray]
+  tardebug:
+    description: Toggles debug mode for TazAntixRAY plugin.
+    usage: /tardebug
+    permission: tazantixray.debug
+    aliases: [tazantixraydebug]
+  tarreload:
+    description: Reloads the TazAntixRAY configuration.
+    usage: /tarreload
+    permission: tazantixray.admin
+    aliases: [tazantixrayreload]
+  tarworld:
+    description: Manages the world whitelist for TazAntixRAY.
+    usage: /tarworld <list|add|remove> [worldName]
+    permission: tazantixray.admin
+    aliases: [tazantixrayworld]
+permissions:
+  tazantixray.admin:
+    description: Allows access to TazAntixRAY admin commands.
+    default: op
+    children:
+      tazantixray.debug: true
+      tazantixray.world: true
+      tazantixray.reload: true
+  tazantixray.debug:
+    description: Allows toggling of TazAntixRAY debug mode.
+    default: op
+  tazantixray.world:
+    description: Allows managing world whitelist for TazAntixRAY.
+    default: op
+  tazantixray.reload:
+    description: Allows reloading TazAntixRAY configuration.
+    default: op

@@ -1,0 +1,124 @@
+# ========================================
+# TazAntixRAY Configuration
+# ========================================
+# Advanced Anti-XRay plugin for Folia
+# Developed by TazukiVN
+# Version: 1.0.1
+# ========================================
+
+# ========================================
+# GENERAL SETTINGS
+# ========================================
+settings:
+  # Language for messages (en, vi, es, fr, de, etc.)
+  # Language files are located in plugins/TazAntixRAY/lang/
+  language: "en"
+
+  # Enable debug mode for detailed logging
+  # Set to true for troubleshooting, false for production
+  debug-mode: false
+
+  # Refresh cooldown in seconds to prevent lag from rapid Y-level changes
+  # Higher values = less lag but slower updates
+  # Lower values = faster updates but potential lag
+  refresh-cooldown-seconds: 3
+
+  # View distance for chunk refreshing (in chunks)
+  # Uses server view distance if not specified
+  # view-distance: 10
+
+# ========================================
+# WORLD CONFIGURATION
+# ========================================
+worlds:
+  # List of worlds where anti-xray is active
+  # Add world names exactly as they appear in your server folder
+  whitelist:
+    - "world"
+    - "mining_world"
+    # - "survival_world"
+    # - "resource_world"
+
+  # IMPORTANT: Avoid adding these world types:
+  # - Nether worlds (world_nether)
+  # - End worlds (world_the_end)
+  # - Creative worlds
+  # These can cause visual glitches or performance issues
+
+# ========================================
+# ANTI-XRAY SETTINGS
+# ========================================
+antixray:
+  # Y-level threshold for hiding blocks
+  # Players above this Y-level will have blocks below hide-below-y hidden
+  trigger-y-level: 31.0
+
+  # Y-level below which blocks are hidden
+  # All blocks at or below this Y-level will be replaced with air
+  hide-below-y: 16
+
+  # Transition zone settings
+  transition:
+    # Y-level where hiding stops (players below this see everything)
+    stop-hiding-y: 30.0
+
+    # Smooth transition between hidden and visible states
+    smooth-transition: true
+
+# ========================================
+# PERFORMANCE SETTINGS
+# ========================================
+performance:
+  # Enable Folia-specific optimizations
+  folia-optimizations: true
+
+  # Region-aware chunk processing
+  region-aware-processing: true
+
+  # Maximum chunks to process per tick (per region)
+  max-chunks-per-tick: 50
+
+  # Enable async processing for non-critical operations
+  async-processing: true
+
+# ========================================
+# ADVANCED SETTINGS
+# ========================================
+advanced:
+  # Packet processing settings
+  packet-processing:
+    # Enable chunk data modification
+    modify-chunk-data: true
+
+    # Enable block change modification
+    modify-block-changes: true
+
+    # Enable multi-block change modification
+    modify-multi-block-changes: true
+
+  # Teleport handling
+  teleport-handling:
+    # Delay teleports to prevent void bugs (in ticks)
+    delay-ticks: 1
+
+    # Enable teleport state management
+    manage-teleport-states: true
+
+# ========================================
+# COMPATIBILITY SETTINGS
+# ========================================
+compatibility:
+  # Enable compatibility with other anti-xray plugins
+  other-antixray-plugins: false
+
+  # Enable compatibility with world management plugins
+  world-management-plugins: true
+
+  # Enable compatibility with permission plugins
+  permission-plugins: true
+
+# ========================================
+# DO NOT MODIFY BELOW THIS LINE
+# ========================================
+# Configuration version for automatic updates
+config-version: 1
