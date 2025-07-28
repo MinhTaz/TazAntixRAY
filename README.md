@@ -1,6 +1,6 @@
-<a href> <img src="https://raw.githubusercontent.com/TazukiVN/TazAntixRAY/master/minecraft_title.png"> </a>
+<a href> <img src="https://cdn.discordapp.com/attachments/1264376591203700799/1399353137608786021/2025-07-28_16.41.40.png?ex=6888b0aa&is=68875f2a&hm=0e50b631edbca638005ec8266a22d3aaceb09eb92a8a7079ab53861985e638f8&"> </a>
 
-# TazAntixRAY - Advanced Folia Edition
+# TazAntixRAY - Like DonutSmp
 
 An advanced Anti-XRay plugin for Minecraft with full Folia support and region-based threading optimization. **Developed by TazukiVN**
 
@@ -149,22 +149,6 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 To change language, edit `language: "vi"` in config.yml
 
-## Changelog
-
-### Version 1.0.1 (TazAntixRAY Folia Edition)
-- 🎉 **Complete rewrite** by TazukiVN
-- ✅ **Full Folia support** with region-based threading
-- ✅ **Multi-language system** (English, Vietnamese)
-- ✅ **Advanced configuration** with comprehensive settings
-- ✅ **New command system** with aliases and better UX
-- ✅ **Performance optimizations** for large servers
-- ✅ **Smart caching system** with configurable cooldowns
-- ✅ **Enhanced debugging** with detailed logging
-- ✅ **Modern plugin structure** with clean code architecture
-- ✅ **Backward compatibility** with old config format
-
-### Previous Versions (FliceXYZAntiXray)
-- Version 2.5 and below: Original Paper/Spigot versions
 
 ## Compiling
 
