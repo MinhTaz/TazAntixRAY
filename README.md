@@ -24,7 +24,7 @@ An advanced Anti-XRay plugin for Minecraft with full Folia support and region-ba
 
 ## Installation
 
-1. Download the latest release JAR file
+1. Download the latest release JAR file in here https://github.com/MinhTaz/TazAntixRAY/releases/tag/Donutsmp
 2. Place it in your server's `plugins/` folder
 3. Ensure **PacketEvents** is installed
 4. Restart your server
