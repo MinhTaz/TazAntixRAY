@@ -249,9 +249,6 @@ settings:
 3. **Performance issues**: Adjust refresh cooldown in config
 4. **Folia compatibility**: Ensure you're running Folia, not Paper/Spigot
 
-### Debug Mode
-
-Enable debug mode with `/ylevelhiderdebug` to see detailed logs.
 
 ## Known Issues (Fixed in Folia Edition)
 
