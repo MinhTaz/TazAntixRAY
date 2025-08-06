@@ -1,0 +1,113 @@
+# General plugin settings
+settings:
+  # Language for messages (e.g., "en" for English)
+  language: "en"
+  # Enable debug mode for troubleshooting
+  debug-mode: false
+  # Cooldown in seconds between refreshes to prevent lag
+  refresh-cooldown-seconds: 3
+
+# Configure which worlds are affected
+worlds:
+  # List of worlds where anti-xray is enabled
+  whitelist:
+    - "world"
+    - "mining_world"
+
+# Main settings for the anti-xray feature
+antixray:
+  # Start hiding blocks when the player is ABOVE this Y-level
+  # When player is ABOVE Y16: Hide all ores below Y16
+  # When player is AT or BELOW Y16: Show everything normally
+  trigger-y-level: 16.0
+  # Blocks below this Y-level will be hidden (when player is above trigger-y-level)
+  hide-below-y: 16
+
+  # Settings for the transition zone to make hiding smoother
+  transition:
+    # This setting is now simplified - no complex transition zones
+    # Player either sees everything (≤Y16) or has ores hidden (>Y16)
+    stop-hiding-y: 16.0
+    # Enable or disable the smooth transition effect
+    smooth-transition: true
+
+  # Limit the anti-xray effect to a small area around the player
+  limited-area:
+    enabled: false
+    # The radius in chunks around the player to apply the effect
+    chunk-radius: 3
+    # Only apply when the player is nearby
+    apply-only-near-player: true
+
+  # Block replacement settings
+  replacement:
+    # The block type used to replace hidden ores (e.g., "air", "deepslate", "stone")
+    block-type: "air"
+
+  # Entity hiding settings
+  entities:
+    # Hide all entities in hidden areas (true = hide, false = show)
+    hide-entities: true
+
+  # Complete underground protection
+  underground-protection:
+    # Hide everything below Y16 when player is ABOVE Y16
+    # When player reaches Y16 or below: Show everything normally
+    # This includes: blocks, entities, chests, etc.
+    enabled: true
+
+# Performance settings (automatically optimized for your platform)
+performance:
+  max-chunks-per-tick: 50
+  max-entities-per-tick: 100
+  # Instant protection settings - load large area immediately
+  instant-protection:
+    enabled: true
+    # Load this many chunks radius instantly when player approaches Y16
+    instant-load-radius: 15
+    # Pre-load protection when player is this many blocks above Y16
+    pre-load-distance: 10
+    # Force immediate chunk refresh (prevents seeing bases)
+    force-immediate-refresh: true
+
+# Advanced settings, usually not necessary to change
+advanced:
+  # Packet processing to hide blocks more effectively
+  packet-processing:
+    modify-chunk-data: true
+    modify-block-changes: true
+    modify-multi-block-changes: true
+  # How to handle player teleports
+  teleport-handling:
+    delay-ticks: 1
+    manage-teleport-states: true
+
+# Compatibility settings for other plugins
+compatibility:
+  other-antixray-plugins: false
+  world-management-plugins: true
+  permission-plugins: true
+  # Bedrock Edition support via Geyser/Floodgate
+  bedrock-support:
+    enabled: true
+    # Special handling for Bedrock players
+    geyser-compatibility: true
+    floodgate-compatibility: true
+    # Bedrock players need different packet handling
+    bedrock-packet-optimization: true
+    # Auto-detect Floodgate prefixes (leave empty for auto-detection)
+    floodgate-prefixes: []
+    # Examples: ['.', '*', '_', 'BE_', 'Mobile_']
+    # If empty, plugin will auto-detect from Floodgate config
+    auto-detect-floodgate-config: true
+    # Additional detection methods
+    detection-methods:
+      # Check for Floodgate API if available
+      use-floodgate-api: true
+      # Check for Geyser API if available
+      use-geyser-api: true
+      # Fallback UUID pattern detection
+      uuid-pattern-detection: true
+
+# Configuration version, do not modify this line
+config-version: 2
