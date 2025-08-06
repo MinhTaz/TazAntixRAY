@@ -1,1 +1,153 @@
+# ========================================
+# TazAntixRAY Language File - Vietnamese
+# ========================================
+# Language: Tiếng Việt (vi)
+# Translator: TazukiVN
+# Version: 1.1.0
+# ========================================
 
+messages:
+  # ========================================
+  # GENERAL MESSAGES
+  # ========================================
+  prefix: "&8[&6TazAntixRAY&8]&r "
+  
+  # Status messages
+  status:
+    on: "&aBẬT"
+    off: "&cTẮT"
+    enabled: "&aĐã bật"
+    disabled: "&cĐã tắt"
+  
+  # ========================================
+  # ERROR MESSAGES
+  # ========================================
+  error:
+    no-permission: "&cBạn không có quyền sử dụng lệnh này."
+    world-not-found: "&cKhông tìm thấy thế giới '{0}'."
+    packetevents-null: "&cPacketEvents.getAPI() trả về null. Điều này cho thấy có vấn đề nghiêm trọng với thiết lập thư viện PacketEvents."
+    packetevents-load-failed: "&cPacketEvents API không thể tải đúng cách sau packetEventsAPI.load()."
+    packetevents-not-available: "&cPacketEvents API không khả dụng hoặc không được tải trong onEnable. TazAntixRAY sẽ không hoạt động."
+    air-state-failed: "&cKhông thể lấy WrappedBlockState cho AIR: {0}"
+    air-state-null: "&cKhông thể khởi tạo trạng thái khối AIR. Đang tắt plugin."
+    online-player-loop: "&cLỗi trong vòng lặp người chơi trực tuyến trong onEnable: {0}"
+  
+  # ========================================
+  # INFO MESSAGES
+  # ========================================
+  info:
+    packetevents-loaded: "&aPacketEvents API đã được tải thành công trong onLoad."
+    packetevents-init: "&aPacketEvents.init() được gọi qua Folia scheduler."
+    plugin-enabled: "&aTazAntixRAY đã được bật. Chế độ debug hiện tại: {0}"
+    plugin-disabled: "&cTazAntixRAY đã được tắt."
+    active-worlds: "&aTazAntixRAY đang hoạt động trong các thế giới: {0}"
+  
+  # ========================================
+  # WARNING MESSAGES
+  # ========================================
+  warning:
+    plugin-disabled-before-init: "&ePlugin đã bị tắt trước khi PacketEvents.init() có thể được gọi qua scheduler."
+    packetevents-not-loaded-init: "&ePacketEvents API không được tải khi tác vụ init được lên lịch chạy."
+  
+  # ========================================
+  # CONFIG MESSAGES
+  # ========================================
+  config:
+    worlds-not-found: "&eKhông tìm thấy danh sách 'whitelisted-worlds' trong config.yml. Sử dụng danh sách trống."
+    cooldown-set: "&aĐã đặt thời gian hồi chiêu làm mới thành {0} giây ({1}ms)."
+  
+  # ========================================
+  # COMMAND MESSAGES
+  # ========================================
+  command:
+    # Main command
+    main:
+      usage: "&eCách sử dụng: /tazantixray <debug|reload|world|checkplayer|info> [tham số]"
+      unknown-subcommand: "&cLệnh phụ không xác định: {0}. Sử dụng /tazantixray để xem trợ giúp."
+    
+    # Debug command
+    debug:
+      toggled: "&aChế độ debug hiện tại là {0}&a."
+    
+    # Reload command
+    reload:
+      success: "&aĐã tải lại cấu hình. Thế giới trong danh sách trắng: &f{0}"
+    
+    # World command
+    world:
+      usage: "&eCách sử dụng: /tarworld <list|add|remove> [tênThếGiới]"
+      usage-with-world: "&eCách sử dụng: /tarworld <add|remove> <tênThếGiới>"
+      list: "&aThế giới trong danh sách trắng: &f{0}"
+      added: "&aĐã thêm thế giới '{0}' vào danh sách trắng."
+      removed: "&aĐã xóa thế giới '{0}' khỏi danh sách trắng."
+      already-added: "&eThế giới '{0}' đã có trong danh sách trắng."
+      not-in-list: "&eThế giới '{0}' không có trong danh sách trắng."
+      unknown-subcommand: "&cLệnh phụ không xác định. Cách sử dụng: /tarworld <list|add|remove> [tênThếGiới]"
+  
+  # ========================================
+  # LOG MESSAGES
+  # ========================================
+  log:
+    debug-toggled: "&aChế độ debug đã được chuyển thành {0} bởi {1}"
+    config-reloaded: "&aCấu hình đã được tải lại bởi {0}. Thế giới trong danh sách trắng: {1}"
+    world-added: "&aThế giới '{0}' đã được thêm vào danh sách trắng bởi {1}"
+    world-removed: "&aThế giới '{0}' đã được xóa khỏi danh sách trắng bởi {1}"
+  
+  # ========================================
+  # HELP MESSAGES
+  # ========================================
+  help:
+    header: "&8&m========&r &6Trợ giúp TazAntixRAY &8&m========&r"
+    footer: "&8&m================================&r"
+    commands:
+      main: "&e/tazantixray &7- Lệnh chính của plugin"
+      debug: "&e/tardebug &7- Bật/tắt chế độ debug"
+      reload: "&e/tarreload &7- Tải lại cấu hình"
+      world: "&e/tarworld &7- Quản lý danh sách trắng thế giới"
+      checkplayer: "&e/tazantixray checkplayer <player> &7- Kiểm tra player Bedrock Edition"
+      info: "&e/tazantixray info &7- Hiển thị thông tin plugin và cài đặt"
+    aliases:
+      main: "&7Tên khác: &f/tar, /antixray"
+      debug: "&7Tên khác: &f/tazantixraydebug"
+      reload: "&7Tên khác: &f/tazantixrayreload"
+      world: "&7Tên khác: &f/tazantixrayworld"
+  
+  # ========================================
+  # FEATURE DESCRIPTIONS
+  # ========================================
+  features:
+    antixray: "&aBảo vệ chống X-Ray: &7Ẩn các khối dưới Y={0} khi người chơi ở trên Y={1}"
+    platform: "&aHỗ trợ đa nền tảng: &7Hoạt động trên Folia, Paper và Spigot"
+    performance: "&aHiệu suất: &7Tác động tối thiểu đến máy chủ với bộ nhớ đệm thông minh"
+    worlds: "&aQuản lý thế giới: &7Có thể cấu hình kích hoạt theo từng thế giới"
+    limited-area: "&aẨn khu vực giới hạn: &7Chỉ ẩn các khu vực nhỏ để ngăn phát hiện căn cứ"
+    deepslate: "&aThay thế bằng đá phiến sâu: &7Thay thế các khối ẩn bằng đá phiến sâu để có hình ảnh đẹp hơn"
+    entities: "&aẨn thực thể: &7Ẩn các thực thể trong khu vực ẩn để ngăn phát hiện"
+  
+  # ========================================
+  # PLAYER MESSAGES
+  # ========================================
+  player:
+    world-entered: "&aBạn đã vào thế giới được bảo vệ. Anti-XRay hiện đang hoạt động."
+    world-left: "&eBạn đã rời khỏi thế giới được bảo vệ. Anti-XRay hiện không hoạt động."
+    debug-info: "&7[DEBUG] Y: {0}, Ẩn: {1}, Thế giới: {2}, Nền tảng: {3}"
+
+  # ========================================
+  # NEW FEATURE MESSAGES
+  # ========================================
+  new-features:
+    limited-area:
+      enabled: "&aẨn khu vực giới hạn đã được bật. Chỉ các khu vực {0}x{0} chunk sẽ bị ẩn."
+      disabled: "&cẨn khu vực giới hạn đã được tắt. Khôi phục ẩn toàn bộ khu vực."
+    replacement:
+      air: "&7Các khối ẩn sẽ được thay thế bằng không khí."
+      deepslate: "&7Các khối ẩn sẽ được thay thế bằng đá phiến sâu."
+      stone: "&7Các khối ẩn sẽ được thay thế bằng đá."
+    entities:
+      enabled: "&aẨn thực thể đã được bật. Các thực thể trong khu vực ẩn sẽ bị che giấu."
+      disabled: "&cẨn thực thể đã được tắt. Tất cả thực thể sẽ hiển thị."
+    platform:
+      detected: "&aNền tảng được phát hiện: {0}. Tự động tối ưu hóa đã được áp dụng."
+      folia: "&aChạy trên Folia với luồng dựa trên vùng (tự động tối ưu)."
+      spigot: "&aChạy trên Spigot/Paper với luồng truyền thống (tự động tối ưu)."
+      auto-optimized: "&aTất cả tối ưu hóa nền tảng đã được áp dụng tự động!"

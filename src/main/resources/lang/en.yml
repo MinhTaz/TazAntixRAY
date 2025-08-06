@@ -1,0 +1,153 @@
+# ========================================
+# TazAntixRAY Language File - English
+# ========================================
+# Language: English (en)
+# Translator: TazukiVN
+# Version: 1.1.0
+# ========================================
+
+messages:
+  # ========================================
+  # GENERAL MESSAGES
+  # ========================================
+  prefix: "&8[&6TazAntixRAY&8]&r "
+  
+  # Status messages
+  status:
+    on: "&aON"
+    off: "&cOFF"
+    enabled: "&aEnabled"
+    disabled: "&cDisabled"
+  
+  # ========================================
+  # ERROR MESSAGES
+  # ========================================
+  error:
+    no-permission: "&cYou do not have permission to use this command."
+    world-not-found: "&cWorld '{0}' not found."
+    packetevents-null: "&cPacketEvents.getAPI() returned null. This indicates a critical issue with the PacketEvents library setup."
+    packetevents-load-failed: "&cPacketEvents API failed to load correctly after packetEventsAPI.load()."
+    packetevents-not-available: "&cPacketEvents API not available or not loaded in onEnable. TazAntixRAY will not function."
+    air-state-failed: "&cFailed to get WrappedBlockState for AIR: {0}"
+    air-state-null: "&cCould not initialize AIR block state. Disabling plugin."
+    online-player-loop: "&cException during online player loop in onEnable: {0}"
+  
+  # ========================================
+  # INFO MESSAGES
+  # ========================================
+  info:
+    packetevents-loaded: "&aPacketEvents API loaded successfully in onLoad."
+    packetevents-init: "&aPacketEvents.init() called via Folia scheduler."
+    plugin-enabled: "&aTazAntixRAY has been enabled. Debug mode is currently: {0}"
+    plugin-disabled: "&cTazAntixRAY has been disabled."
+    active-worlds: "&aTazAntixRAY is active in worlds: {0}"
+  
+  # ========================================
+  # WARNING MESSAGES
+  # ========================================
+  warning:
+    plugin-disabled-before-init: "&ePlugin was disabled before PacketEvents.init() could be called via scheduler."
+    packetevents-not-loaded-init: "&ePacketEvents API was not loaded when scheduled init task ran."
+  
+  # ========================================
+  # CONFIG MESSAGES
+  # ========================================
+  config:
+    worlds-not-found: "&e'whitelisted-worlds' list not found in config.yml. Using empty list."
+    cooldown-set: "&aRefresh cooldown set to {0} seconds ({1}ms)."
+  
+  # ========================================
+  # COMMAND MESSAGES
+  # ========================================
+  command:
+    # Main command
+    main:
+      usage: "&eUsage: /tazantixray <debug|reload|world|checkplayer|info> [args]"
+      unknown-subcommand: "&cUnknown sub-command: {0}. Use /tazantixray for help."
+    
+    # Debug command
+    debug:
+      toggled: "&aDebug mode is now {0}&a."
+    
+    # Reload command
+    reload:
+      success: "&aConfiguration reloaded. Whitelisted worlds: &f{0}"
+    
+    # World command
+    world:
+      usage: "&eUsage: /tarworld <list|add|remove> [worldName]"
+      usage-with-world: "&eUsage: /tarworld <add|remove> <worldName>"
+      list: "&aWhitelisted worlds: &f{0}"
+      added: "&aWorld '{0}' added to the whitelist."
+      removed: "&aWorld '{0}' removed from the whitelist."
+      already-added: "&eWorld '{0}' is already whitelisted."
+      not-in-list: "&eWorld '{0}' was not in the whitelist."
+      unknown-subcommand: "&cUnknown sub-command. Usage: /tarworld <list|add|remove> [worldName]"
+  
+  # ========================================
+  # LOG MESSAGES
+  # ========================================
+  log:
+    debug-toggled: "&aDebug mode toggled to {0} by {1}"
+    config-reloaded: "&aConfiguration reloaded by {0}. Whitelisted worlds: {1}"
+    world-added: "&aWorld '{0}' added to whitelist by {1}"
+    world-removed: "&aWorld '{0}' removed from whitelist by {1}"
+  
+  # ========================================
+  # HELP MESSAGES
+  # ========================================
+  help:
+    header: "&8&m========&r &6TazAntixRAY Help &8&m========&r"
+    footer: "&8&m================================&r"
+    commands:
+      main: "&e/tazantixray &7- Main plugin command"
+      debug: "&e/tardebug &7- Toggle debug mode"
+      reload: "&e/tarreload &7- Reload configuration"
+      world: "&e/tarworld &7- Manage world whitelist"
+      checkplayer: "&e/tazantixray checkplayer <player> &7- Check if player is Bedrock Edition"
+      info: "&e/tazantixray info &7- Show plugin information and settings"
+    aliases:
+      main: "&7Aliases: &f/tar, /antixray"
+      debug: "&7Aliases: &f/tazantixraydebug"
+      reload: "&7Aliases: &f/tazantixrayreload"
+      world: "&7Aliases: &f/tazantixrayworld"
+  
+  # ========================================
+  # FEATURE DESCRIPTIONS
+  # ========================================
+  features:
+    antixray: "&aAnti-XRay Protection: &7Hides blocks below Y={0} when players are above Y={1}"
+    platform: "&aMulti-Platform Support: &7Works on Folia, Paper, and Spigot"
+    performance: "&aPerformance: &7Minimal server impact with smart caching"
+    worlds: "&aWorld Management: &7Configurable per-world activation"
+    limited-area: "&aLimited Area Hiding: &7Only hides small areas to prevent base detection"
+    deepslate: "&aDeepslate Replacement: &7Replaces hidden blocks with deepslate for better visuals"
+    entities: "&aEntity Hiding: &7Hides entities in hidden areas to prevent detection"
+  
+  # ========================================
+  # PLAYER MESSAGES
+  # ========================================
+  player:
+    world-entered: "&aYou entered a protected world. Anti-XRay is now active."
+    world-left: "&eYou left a protected world. Anti-XRay is now inactive."
+    debug-info: "&7[DEBUG] Y: {0}, Hidden: {1}, World: {2}, Platform: {3}"
+
+  # ========================================
+  # NEW FEATURE MESSAGES
+  # ========================================
+  new-features:
+    limited-area:
+      enabled: "&aLimited area hiding is now enabled. Only {0}x{0} chunk areas will be hidden."
+      disabled: "&cLimited area hiding is now disabled. Full area hiding restored."
+    replacement:
+      air: "&7Hidden blocks will be replaced with air."
+      deepslate: "&7Hidden blocks will be replaced with deepslate."
+      stone: "&7Hidden blocks will be replaced with stone."
+    entities:
+      enabled: "&aEntity hiding is now enabled. Entities in hidden areas will be concealed."
+      disabled: "&cEntity hiding is now disabled. All entities will be visible."
+    platform:
+      detected: "&aDetected platform: {0}. Auto-optimizations applied."
+      folia: "&aRunning on Folia with region-based threading (auto-optimized)."
+      spigot: "&aRunning on Spigot/Paper with traditional threading (auto-optimized)."
+      auto-optimized: "&aAll platform optimizations applied automatically!"
