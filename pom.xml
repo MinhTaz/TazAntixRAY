@@ -6,12 +6,12 @@
 
     <groupId>com.tazukivn</groupId>
     <artifactId>TazAntixRAY</artifactId>
-    <version>1.0.1</version>
+    <version>1.2.0</version>
     <packaging>jar</packaging>
 
     <name>TazAntixRAY</name>
-    <description>Advanced Anti-XRay plugin for Folia with region-based threading support</description>
-    <url>https://github.com/TazukiVN/TazAntixRAY</url>
+    <description>Advanced Anti-XRay plugin with multi-platform support (Folia, Paper, Spigot)</description>
+    <url>https://github.com/MinhTaz/TazAntixRAY</url>
 
     <properties>
         <java.version>21</java.version>
@@ -76,12 +76,21 @@
     </repositories>
 
     <dependencies>
+        <!-- Paper API for Spigot/Paper support -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.20.6-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- Folia API for Folia support -->
         <dependency>
             <groupId>dev.folia</groupId>
             <artifactId>folia-api</artifactId>
             <version>1.20.6-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
+        <!-- PacketEvents for packet manipulation -->
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>

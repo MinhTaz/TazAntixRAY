@@ -1,122 +1,244 @@
-<a href> <img src="https://cdn.discordapp.com/attachments/1264376591203700799/1399353137608786021/2025-07-28_16.41.40.png?ex=6888b0aa&is=68875f2a&hm=0e50b631edbca638005ec8266a22d3aaceb09eb92a8a7079ab53861985e638f8&"> </a>
+# 🛡️ TazAntixRAY
 
-# TazAntixRAY - Like DonutSmp
+[![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)](https://github.com/MinhTaz/TazAntixRAY)
+[![Platform](https://img.shields.io/badge/platform-Folia%20%7C%20Paper%20%7C%20Spigot-green.svg)](https://github.com/MinhTaz/TazAntixRAY)
+[![Bedrock](https://img.shields.io/badge/bedrock-supported-purple.svg)](https://github.com/MinhTaz/TazAntixRAY)
+[![Java](https://img.shields.io/badge/java-21-orange.svg)](https://github.com/MinhTaz/TazAntixRAY)
+[![License](https://img.shields.io/badge/license-MIT-yellow.svg)](LICENSE)
 
-An advanced Anti-XRay plugin for Minecraft with full Folia support and region-based threading optimization. **Developed by TazukiVN**
+**🚀 Advanced Anti-XRay plugin with Instant Protection, Bedrock Support & Multi-Platform Compatibility**
 
-## Features
+TazAntixRAY is a next-generation anti-cheat plugin designed to prevent X-ray hacking with **instant protection** that eliminates base visibility. Features intelligent block hiding, entity concealment, Bedrock Edition support, and seamless compatibility across Folia, Paper, and Spigot platforms.
 
-- ✅ **Folia Compatible**: Fully supports Folia's region-based threading
-- ✅ **Advanced Anti X-Ray**: Configurable Y-level based block hiding
-- ✅ **Multi-Language Support**: English, Vietnamese, and more
-- ✅ **Advanced Configuration**: Comprehensive config with performance tuning
-- ✅ **World Management**: Per-world activation with easy commands
-- ✅ **Performance Optimized**: Region-aware processing for maximum efficiency
-- ✅ **PacketEvents Integration**: Efficient packet-level modifications
-- ✅ **Smart Caching**: Intelligent cooldown system prevents lag
-- ✅ **Developer Friendly**: Extensive debug mode and logging
+## ✨ Features
 
-## Requirements
+### ⚡ **NEW: Instant Protection System**
+- **🚀 Zero-Delay Loading**: Instantly loads 15+ chunks when players approach Y16
+- **🛡️ Pre-Loading**: Starts protection 10 blocks before reaching underground
+- **👁️ No Base Visibility**: Players can't see bases before plugin activates
+- **🎯 Force Immediate Refresh**: Eliminates any chance of seeing hidden structures
+
+### 📱 **NEW: Bedrock Edition Support**
+- **🔧 Geyser Compatibility**: Full support for Geyser-connected players
+- **🌊 Floodgate Integration**: Auto-detects custom prefixes (not just ".")
+- **🤖 Smart Detection**: Multiple detection methods (API, UUID patterns, prefixes)
+- **⚡ Optimized Performance**: Smaller chunk radius for mobile players
+
+### 🎯 **Core Anti-XRay Protection**
+- **Smart Block Hiding**: Dynamically hides blocks below configurable Y-levels
+- **Transition Zones**: Smooth transitions between hidden and visible areas
+- **Performance Optimized**: Minimal server impact with intelligent caching
+
+### 🌍 **Multi-Platform Support**
+- **Folia Compatible**: Full support for region-based threading
+- **Paper/Spigot Support**: Traditional server compatibility
+- **Auto-Optimization**: Automatically detects platform and applies optimal settings
+
+### 🎨 **Advanced Hiding Features**
+- **Complete Underground Protection**: Hide everything below Y16 from X-ray and freecam
+- **Limited Area Hiding**: Hide only small areas (3x3 chunks) around players
+- **Block Replacement**: Replace hidden blocks with air, deepslate, or stone
+- **Entity Hiding**: Conceal all entities in hidden areas
+- **Smart Detection**: Normal view when actually mining underground
+
+### 🔧 **Smart Configuration**
+- **Per-World Settings**: Enable/disable per world
+- **Flexible Y-Levels**: Customizable trigger and hiding thresholds
+- **Performance Tuning**: Adjustable chunk processing limits
+- **Language Support**: English and Vietnamese translations
+
+## 📦 Requirements
 
 - **Java 21** or higher
-- **Folia** server (Paper fork with region-based threading)
-- **PacketEvents** plugin (dependency)
+- **Folia/Paper/Spigot** server (1.20.6+)
+- **PacketEvents** plugin (required dependency)
 
-## Installation
+### Optional Dependencies (for enhanced features)
+- **Geyser-Spigot**: For Bedrock Edition player support
+- **Floodgate**: For Bedrock Edition authentication
+- **ViaVersion**: For cross-version compatibility
+- **ProtocolLib**: For advanced packet handling
+- **PlaceholderAPI**: For placeholder support
 
-1. Download the latest release JAR file in here [https://github.com/MinhTaz/TazAntixRAY/releases/tag/Release]
-2. Place it in your server's `plugins/` folder
-3. Ensure **PacketEvents** is installed
-4. Restart your server
-5. Configure worlds in `config.yml`
+## 📦 Installation
 
-## Building from Source
+1. **Download** the latest release from [Releases](https://github.com/MinhTaz/TazAntixRAY/releases)
+2. **Install PacketEvents** dependency (if not already installed)
+3. **Optional**: Install Geyser-Spigot and Floodgate for Bedrock support
+4. **Place** `TazAntixRAY-1.2.0.jar` in your `plugins/` folder
+5. **Restart** your server
+6. **Configure** the plugin in `plugins/TazAntixRAY/config.yml`
+
+## 🔧 Building from Source
 
 ### Prerequisites
 - Java Development Kit (JDK) 21
-- Maven 3.6+ or Gradle 7+
+- Maven 3.6+
 - Internet connection (for dependencies)
 
-### Build with Maven
+### Build Commands
 ```bash
+git clone https://github.com/MinhTaz/TazAntixRAY.git
+cd TazAntixRAY
 mvn clean package
 ```
 
 The compiled JAR will be in the `target/` directory.
 
-## Configuration
+## ⚙️ Configuration
 
-Edit `plugins/TazAntixRAY/config.yml`:
-
+### Basic Setup
 ```yaml
-# General Settings
-settings:
-  language: "en"  # Language: en, vi, etc.
-  debug-mode: false
-  refresh-cooldown-seconds: 3
-
-# World Configuration
+# Enable anti-xray for specific worlds
 worlds:
   whitelist:
     - "world"
     - "mining_world"
 
-# Anti-XRay Settings
+# Basic anti-xray settings
 antixray:
-  trigger-y-level: 31.0    # Hide blocks when player above this Y
-  hide-below-y: 16         # Hide blocks at or below this Y
-  transition:
-    stop-hiding-y: 30.0    # Stop hiding when player below this Y
-    smooth-transition: true
-
-# Performance Settings
-performance:
-  folia-optimizations: true
-  region-aware-processing: true
-  max-chunks-per-tick: 50
+  trigger-y-level: 31.0    # Hide blocks when player is above this Y
+  hide-below-y: 16         # Hide all blocks at or below this Y
 ```
 
-## Commands
+### NEW: Instant Protection Settings
+```yaml
+# Instant protection - eliminates base visibility
+performance:
+  instant-protection:
+    enabled: true
+    instant-load-radius: 15        # Load 15 chunks instantly
+    pre-load-distance: 10          # Start protection 10 blocks early
+    force-immediate-refresh: true  # No delays, instant activation
 
-| Command | Aliases | Permission | Description |
-|---------|---------|------------|-------------|
-| `/tazantixray` | `/tar`, `/antixray` | `tazantixray.admin` | Main plugin command |
-| `/tardebug` | `/tazantixraydebug` | `tazantixray.debug` | Toggle debug mode |
-| `/tarreload` | `/tazantixrayreload` | `tazantixray.reload` | Reload configuration |
-| `/tarworld list` | `/tazantixrayworld list` | `tazantixray.world` | List whitelisted worlds |
-| `/tarworld add <world>` | `/tazantixrayworld add` | `tazantixray.world` | Add world to whitelist |
-| `/tarworld remove <world>` | `/tazantixrayworld remove` | `tazantixray.world` | Remove world from whitelist |
+# Bedrock Edition support
+compatibility:
+  bedrock-support:
+    enabled: true
+    geyser-compatibility: true
+    floodgate-compatibility: true
+    # Auto-detect custom Floodgate prefixes
+    floodgate-prefixes: []         # Leave empty for auto-detection
+    auto-detect-floodgate-config: true
+    detection-methods:
+      use-floodgate-api: true      # Use Floodgate API if available
+      use-geyser-api: true         # Use Geyser API if available
+      uuid-pattern-detection: true # Fallback UUID pattern detection
+```
+
+### Advanced Features
+```yaml
+# Limited area hiding (recommended for better base security)
+antixray:
+  limited-area:
+    enabled: true
+    chunk-radius: 3
+    apply-only-near-player: true
+
+  # Block replacement options
+  replacement:
+    block-type: "deepslate"      # air, deepslate, stone
+
+  # Entity hiding
+  entities:
+    # Hide all entities in hidden areas (true = hide, false = show)
+    hide-entities: true
+
+  # Complete underground protection
+  underground-protection:
+    # Hide everything below Y16 when player is above Y31
+    # This includes: blocks, entities, chests, etc.
+    enabled: true
+```
+
+## 🎮 Commands
+
+| Command | Permission | Description |
+|---------|------------|-------------|
+| `/tazantixray` | `tazantixray.admin` | Main plugin command |
+| `/tazantixray info` | `tazantixray.admin` | Show plugin information and settings |
+| `/tazantixray checkplayer <player>` | `tazantixray.admin` | Check if player is Bedrock Edition |
+| `/tardebug` | `tazantixray.debug` | Toggle debug mode |
+| `/tarreload` | `tazantixray.admin` | Reload configuration |
+| `/tarworld <list\|add\|remove> [world]` | `tazantixray.admin` | Manage world whitelist |
 
 ### Command Examples
+```bash
+# Show plugin information
+/tazantixray info
+
+# Check if a player is using Bedrock Edition
+/tazantixray checkplayer Steve
+
+# List whitelisted worlds
+/tarworld list
+
+# Add a world to whitelist
+/tarworld add mining_world
+
+# Remove a world from whitelist
+/tarworld remove old_world
+
+# Toggle debug mode
+/tardebug
+
+# Reload configuration
+/tarreload
 ```
-/tazantixray debug          # Toggle debug mode
-/tazantixray reload         # Reload config
-/tazantixray world list     # List worlds
-/tarworld add mining_world  # Add world
-/tarworld remove old_world  # Remove world
+
+## 🔒 Permissions
+
+| Permission | Default | Description |
+|------------|---------|-------------|
+| `tazantixray.admin` | `op` | Access to all admin commands |
+| `tazantixray.debug` | `op` | Toggle debug mode |
+| `tazantixray.world` | `op` | Manage world whitelist |
+| `tazantixray.reload` | `op` | Reload configuration |
+
+## 🚀 Performance
+
+### Auto-Optimizations
+- **Platform Detection**: Automatically detects Folia vs Spigot/Paper
+- **Smart Threading**: Uses region-based threading on Folia, traditional on Spigot/Paper
+- **Adaptive Scheduling**: Chooses optimal scheduler for each platform
+- **Memory Optimization**: Automatic memory management and caching
+
+### Performance Settings
+```yaml
+# Only these settings need manual configuration
+performance:
+  max-chunks-per-tick: 50      # Adjust based on server performance
+  max-entities-per-tick: 100   # Limit entity processing
 ```
 
-## How It Works
+**Note**: All other optimizations are applied automatically based on your server platform!
 
-1. **Player Height Detection**: Monitors player Y-coordinate
-2. **Dynamic Hiding**: When player is above Y=31, blocks below Y=16 are hidden
-3. **Region-Aware**: Uses Folia's region scheduler for thread-safe operations
-4. **Packet Modification**: Intercepts chunk and block change packets
-5. **Smart Refresh**: Efficiently updates player view when transitioning between states
+## 🌐 Multi-Language Support
 
-## Folia-Specific Features
+TazAntixRAY supports multiple languages:
+- **English** (`en`) - Default
+- **Vietnamese** (`vi`) - Tiếng Việt
 
-- **Region Scheduler**: Uses `RegionScheduler` for location-based tasks
-- **Global Scheduler**: Uses `GlobalRegionScheduler` for global operations
-- **Cross-Region Safety**: Handles chunk operations across different regions
-- **Thread-Safe**: All operations are designed for Folia's threading model
+Set your language in `config.yml`:
+```yaml
+settings:
+  language: "en"  # or "vi"
+```
 
-## Performance Notes
+## 📊 Compatibility
 
-- Minimal impact on server performance
-- Efficient packet-level modifications
-- Smart cooldown system prevents spam
-- Region-aware chunk refreshing
+| Platform | Version | Status |
+|----------|---------|--------|
+| **Folia** | 1.20.6+ | ✅ Full Support |
+| **Paper** | 1.20.6+ | ✅ Full Support |
+| **Spigot** | 1.20.6+ | ✅ Full Support |
+| **Bedrock Edition** | Any | ✅ Full Support (via Geyser/Floodgate) |
+
+### Bedrock Edition Support
+- ✅ **Geyser**: Auto-detects Geyser-connected players
+- ✅ **Floodgate**: Supports any custom prefix configuration
+- ✅ **Performance Optimized**: Smaller chunk radius for mobile devices
+- ✅ **API Integration**: Uses Floodgate/Geyser APIs when available
 
 ## Troubleshooting
 
@@ -136,6 +258,37 @@ Enable debug mode with `/ylevelhiderdebug` to see detailed logs.
 - ✅ **Chunk visibility bug**: Fixed with improved region-aware chunk handling
 - ✅ **Threading issues**: Resolved with Folia's region-based threading
 - ✅ **Cross-region operations**: Now properly handled with RegionScheduler
+
+## 🆕 What's New in v1.2.0 - Big Update!
+
+### ⚡ **Instant Protection System**
+- **Zero-delay activation**: Plugin now loads 15+ chunks instantly when players approach Y16
+- **Pre-loading mechanism**: Starts protection 10 blocks before reaching underground areas
+- **Force immediate refresh**: Eliminates any possibility of seeing hidden bases
+- **No more base visibility**: Players can no longer see bases before plugin activates
+
+### 📱 **Bedrock Edition Support**
+- **Full Geyser compatibility**: Auto-detects players connected via Geyser
+- **Smart Floodgate integration**: Auto-detects custom prefixes (not limited to ".")
+- **Multiple detection methods**: API integration, UUID patterns, and prefix detection
+- **Performance optimization**: Optimized chunk loading for mobile devices
+
+### 🔧 **Enhanced Configuration**
+- **Flexible Floodgate prefixes**: Supports any custom prefix configuration
+- **Auto-detection system**: Automatically reads Floodgate config files
+- **Advanced detection methods**: Multiple fallback detection systems
+- **Improved compatibility**: Enhanced softdepend for better plugin integration
+
+### 🎮 **New Commands**
+- `/tazantixray info` - Display comprehensive plugin information
+- `/tazantixray checkplayer <player>` - Check if a player is using Bedrock Edition
+- Enhanced debugging capabilities with detailed player information
+
+### 🚀 **Performance Improvements**
+- **Instant chunk loading**: Large area protection without delays
+- **Bedrock-optimized**: Smaller chunk radius for mobile players
+- **Smart caching**: Improved memory management and player detection caching
+- **Platform-aware optimization**: Better performance across all server types
 
 ## License
 
