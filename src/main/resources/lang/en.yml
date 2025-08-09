@@ -3,7 +3,7 @@
 # ========================================
 # Language: English (en)
 # Translator: TazukiVN
-# Version: 1.1.0
+# Version: 1.0.1
 # ========================================
 
 messages:
@@ -62,7 +62,7 @@ messages:
   command:
     # Main command
     main:
-      usage: "&eUsage: /tazantixray <debug|reload|world|checkplayer|info> [args]"
+      usage: "&eUsage: /tazantixray <debug|reload|world> [args]"
       unknown-subcommand: "&cUnknown sub-command: {0}. Use /tazantixray for help."
     
     # Debug command
@@ -104,8 +104,6 @@ messages:
       debug: "&e/tardebug &7- Toggle debug mode"
       reload: "&e/tarreload &7- Reload configuration"
       world: "&e/tarworld &7- Manage world whitelist"
-      checkplayer: "&e/tazantixray checkplayer <player> &7- Check if player is Bedrock Edition"
-      info: "&e/tazantixray info &7- Show plugin information and settings"
     aliases:
       main: "&7Aliases: &f/tar, /antixray"
       debug: "&7Aliases: &f/tazantixraydebug"
@@ -117,12 +115,9 @@ messages:
   # ========================================
   features:
     antixray: "&aAnti-XRay Protection: &7Hides blocks below Y={0} when players are above Y={1}"
-    platform: "&aMulti-Platform Support: &7Works on Folia, Paper, and Spigot"
+    folia: "&aFolia Support: &7Optimized for region-based threading"
     performance: "&aPerformance: &7Minimal server impact with smart caching"
     worlds: "&aWorld Management: &7Configurable per-world activation"
-    limited-area: "&aLimited Area Hiding: &7Only hides small areas to prevent base detection"
-    deepslate: "&aDeepslate Replacement: &7Replaces hidden blocks with deepslate for better visuals"
-    entities: "&aEntity Hiding: &7Hides entities in hidden areas to prevent detection"
   
   # ========================================
   # PLAYER MESSAGES
@@ -130,24 +125,4 @@ messages:
   player:
     world-entered: "&aYou entered a protected world. Anti-XRay is now active."
     world-left: "&eYou left a protected world. Anti-XRay is now inactive."
-    debug-info: "&7[DEBUG] Y: {0}, Hidden: {1}, World: {2}, Platform: {3}"
-
-  # ========================================
-  # NEW FEATURE MESSAGES
-  # ========================================
-  new-features:
-    limited-area:
-      enabled: "&aLimited area hiding is now enabled. Only {0}x{0} chunk areas will be hidden."
-      disabled: "&cLimited area hiding is now disabled. Full area hiding restored."
-    replacement:
-      air: "&7Hidden blocks will be replaced with air."
-      deepslate: "&7Hidden blocks will be replaced with deepslate."
-      stone: "&7Hidden blocks will be replaced with stone."
-    entities:
-      enabled: "&aEntity hiding is now enabled. Entities in hidden areas will be concealed."
-      disabled: "&cEntity hiding is now disabled. All entities will be visible."
-    platform:
-      detected: "&aDetected platform: {0}. Auto-optimizations applied."
-      folia: "&aRunning on Folia with region-based threading (auto-optimized)."
-      spigot: "&aRunning on Spigot/Paper with traditional threading (auto-optimized)."
-      auto-optimized: "&aAll platform optimizations applied automatically!"
+    debug-info: "&7[DEBUG] Y: {0}, Hidden: {1}, World: {2}"

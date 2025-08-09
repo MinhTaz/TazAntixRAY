@@ -3,7 +3,7 @@
 # ========================================
 # Language: Tiếng Việt (vi)
 # Translator: TazukiVN
-# Version: 1.1.0
+# Version: 1.0.1
 # ========================================
 
 messages:
@@ -62,7 +62,7 @@ messages:
   command:
     # Main command
     main:
-      usage: "&eCách sử dụng: /tazantixray <debug|reload|world|checkplayer|info> [tham số]"
+      usage: "&eCách sử dụng: /tazantixray <debug|reload|world> [tham số]"
       unknown-subcommand: "&cLệnh phụ không xác định: {0}. Sử dụng /tazantixray để xem trợ giúp."
     
     # Debug command
@@ -104,8 +104,6 @@ messages:
       debug: "&e/tardebug &7- Bật/tắt chế độ debug"
       reload: "&e/tarreload &7- Tải lại cấu hình"
       world: "&e/tarworld &7- Quản lý danh sách trắng thế giới"
-      checkplayer: "&e/tazantixray checkplayer <player> &7- Kiểm tra player Bedrock Edition"
-      info: "&e/tazantixray info &7- Hiển thị thông tin plugin và cài đặt"
     aliases:
       main: "&7Tên khác: &f/tar, /antixray"
       debug: "&7Tên khác: &f/tazantixraydebug"
@@ -117,12 +115,9 @@ messages:
   # ========================================
   features:
     antixray: "&aBảo vệ chống X-Ray: &7Ẩn các khối dưới Y={0} khi người chơi ở trên Y={1}"
-    platform: "&aHỗ trợ đa nền tảng: &7Hoạt động trên Folia, Paper và Spigot"
+    folia: "&aHỗ trợ Folia: &7Được tối ưu hóa cho luồng dựa trên vùng"
     performance: "&aHiệu suất: &7Tác động tối thiểu đến máy chủ với bộ nhớ đệm thông minh"
     worlds: "&aQuản lý thế giới: &7Có thể cấu hình kích hoạt theo từng thế giới"
-    limited-area: "&aẨn khu vực giới hạn: &7Chỉ ẩn các khu vực nhỏ để ngăn phát hiện căn cứ"
-    deepslate: "&aThay thế bằng đá phiến sâu: &7Thay thế các khối ẩn bằng đá phiến sâu để có hình ảnh đẹp hơn"
-    entities: "&aẨn thực thể: &7Ẩn các thực thể trong khu vực ẩn để ngăn phát hiện"
   
   # ========================================
   # PLAYER MESSAGES
@@ -130,24 +125,4 @@ messages:
   player:
     world-entered: "&aBạn đã vào thế giới được bảo vệ. Anti-XRay hiện đang hoạt động."
     world-left: "&eBạn đã rời khỏi thế giới được bảo vệ. Anti-XRay hiện không hoạt động."
-    debug-info: "&7[DEBUG] Y: {0}, Ẩn: {1}, Thế giới: {2}, Nền tảng: {3}"
-
-  # ========================================
-  # NEW FEATURE MESSAGES
-  # ========================================
-  new-features:
-    limited-area:
-      enabled: "&aẨn khu vực giới hạn đã được bật. Chỉ các khu vực {0}x{0} chunk sẽ bị ẩn."
-      disabled: "&cẨn khu vực giới hạn đã được tắt. Khôi phục ẩn toàn bộ khu vực."
-    replacement:
-      air: "&7Các khối ẩn sẽ được thay thế bằng không khí."
-      deepslate: "&7Các khối ẩn sẽ được thay thế bằng đá phiến sâu."
-      stone: "&7Các khối ẩn sẽ được thay thế bằng đá."
-    entities:
-      enabled: "&aẨn thực thể đã được bật. Các thực thể trong khu vực ẩn sẽ bị che giấu."
-      disabled: "&cẨn thực thể đã được tắt. Tất cả thực thể sẽ hiển thị."
-    platform:
-      detected: "&aNền tảng được phát hiện: {0}. Tự động tối ưu hóa đã được áp dụng."
-      folia: "&aChạy trên Folia với luồng dựa trên vùng (tự động tối ưu)."
-      spigot: "&aChạy trên Spigot/Paper với luồng truyền thống (tự động tối ưu)."
-      auto-optimized: "&aTất cả tối ưu hóa nền tảng đã được áp dụng tự động!"
+    debug-info: "&7[DEBUG] Y: {0}, Ẩn: {1}, Thế giới: {2}"

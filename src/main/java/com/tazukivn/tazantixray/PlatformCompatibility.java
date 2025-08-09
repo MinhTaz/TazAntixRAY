@@ -6,17 +6,17 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.lang.reflect.Method;
-import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
 
 /**
- * Platform compatibility layer for Folia vs Spigot/Paper
- * Automatically detects the platform and uses appropriate scheduling methods
+ * Platform compatibility layer for handling different server implementations
+ * Supports both Folia (region-based threading) and Paper/Spigot (traditional threading)
  */
 public class PlatformCompatibility {
     
     private static Boolean isFolia = null;
-    private static Boolean hasRegionScheduler = null;
     private static Boolean hasGlobalRegionScheduler = null;
+    private static Boolean hasRegionScheduler = null;
     
     /**
      * Detect if the server is running Folia
@@ -24,7 +24,6 @@ public class PlatformCompatibility {
     public static boolean isFolia() {
         if (isFolia == null) {
             try {
-                // Try to access Folia-specific classes
                 Class.forName("io.papermc.paper.threadedregions.RegionizedServer");
                 isFolia = true;
             } catch (ClassNotFoundException e) {
@@ -35,28 +34,13 @@ public class PlatformCompatibility {
     }
     
     /**
-     * Check if RegionScheduler is available
-     */
-    public static boolean hasRegionScheduler() {
-        if (hasRegionScheduler == null) {
-            try {
-                Bukkit.class.getMethod("getRegionScheduler");
-                hasRegionScheduler = true;
-            } catch (NoSuchMethodException e) {
-                hasRegionScheduler = false;
-            }
-        }
-        return hasRegionScheduler;
-    }
-    
-    /**
      * Check if GlobalRegionScheduler is available
      */
     public static boolean hasGlobalRegionScheduler() {
         if (hasGlobalRegionScheduler == null) {
             try {
-                Bukkit.class.getMethod("getGlobalRegionScheduler");
-                hasGlobalRegionScheduler = true;
+                Method method = Bukkit.class.getMethod("getGlobalRegionScheduler");
+                hasGlobalRegionScheduler = method != null;
             } catch (NoSuchMethodException e) {
                 hasGlobalRegionScheduler = false;
             }
@@ -65,138 +49,160 @@ public class PlatformCompatibility {
     }
     
     /**
-     * Check if a location is owned by the current region (Folia only)
+     * Check if RegionScheduler is available
      */
-    public static boolean isOwnedByCurrentRegion(Location location) {
-        if (!isFolia()) {
-            return true; // On Spigot/Paper, everything is on the main thread
+    public static boolean hasRegionScheduler() {
+        if (hasRegionScheduler == null) {
+            try {
+                Method method = Bukkit.class.getMethod("getRegionScheduler");
+                hasRegionScheduler = method != null;
+            } catch (NoSuchMethodException e) {
+                hasRegionScheduler = false;
+            }
         }
-        
-        try {
-            Method method = Bukkit.class.getMethod("isOwnedByCurrentRegion", Location.class);
-            return (Boolean) method.invoke(null, location);
-        } catch (Exception e) {
-            return true; // Fallback to true if method not available
-        }
+        return hasRegionScheduler;
     }
     
     /**
-     * Schedule a task on the appropriate scheduler
+     * Run a task on the appropriate scheduler
+     * For Folia: Uses GlobalRegionScheduler
+     * For Paper/Spigot: Uses BukkitScheduler
      */
     public static void runTask(Plugin plugin, Runnable task) {
-        if (hasGlobalRegionScheduler()) {
+        if (isFolia() && hasGlobalRegionScheduler()) {
             try {
-                Method method = Bukkit.class.getMethod("getGlobalRegionScheduler");
-                Object scheduler = method.invoke(null);
-                Method runMethod = scheduler.getClass().getMethod("run", Plugin.class, Runnable.class);
-                runMethod.invoke(scheduler, plugin, task);
-                return;
+                // Use Folia's GlobalRegionScheduler
+                Object globalScheduler = Bukkit.class.getMethod("getGlobalRegionScheduler").invoke(null);
+                Method runMethod = globalScheduler.getClass().getMethod("run", Plugin.class, Consumer.class);
+                runMethod.invoke(globalScheduler, plugin, (Consumer<Object>) scheduledTask -> task.run());
             } catch (Exception e) {
-                // Fall back to Bukkit scheduler
+                // Fallback to Bukkit scheduler if Folia method fails
+                plugin.getLogger().warning("Failed to use Folia GlobalRegionScheduler, falling back to Bukkit scheduler: " + e.getMessage());
+                Bukkit.getScheduler().runTask(plugin, task);
             }
+        } else {
+            // Use traditional Bukkit scheduler for Paper/Spigot
+            Bukkit.getScheduler().runTask(plugin, task);
         }
-        
-        // Fallback to traditional Bukkit scheduler
-        Bukkit.getScheduler().runTask(plugin, task);
     }
     
     /**
-     * Schedule a task at a specific location (Folia) or globally (Spigot/Paper)
+     * Run a task later on the appropriate scheduler
      */
-    public static void runTaskAtLocation(Plugin plugin, Location location, Runnable task) {
-        if (hasRegionScheduler() && location != null) {
+    public static BukkitTask runTaskLater(Plugin plugin, Runnable task, long delay) {
+        if (isFolia() && hasGlobalRegionScheduler()) {
             try {
-                Method method = Bukkit.class.getMethod("getRegionScheduler");
-                Object scheduler = method.invoke(null);
-                Method runMethod = scheduler.getClass().getMethod("run", Plugin.class, Location.class, Runnable.class);
-                runMethod.invoke(scheduler, plugin, location, task);
-                return;
-            } catch (Exception e) {
-                // Fall back to global task
-            }
-        }
-        
-        // Fallback to global task
-        runTask(plugin, task);
-    }
-    
-    /**
-     * Schedule a delayed task
-     */
-    public static BukkitTask runTaskLater(Plugin plugin, Runnable task, long delayTicks) {
-        if (hasGlobalRegionScheduler()) {
-            try {
-                Method method = Bukkit.class.getMethod("getGlobalRegionScheduler");
-                Object scheduler = method.invoke(null);
-                Method runLaterMethod = scheduler.getClass().getMethod("runDelayed", Plugin.class, Runnable.class, long.class);
-                Object scheduledTask = runLaterMethod.invoke(scheduler, plugin, task, delayTicks);
+                // Use Folia's GlobalRegionScheduler with delay
+                Object globalScheduler = Bukkit.class.getMethod("getGlobalRegionScheduler").invoke(null);
+                Method runDelayedMethod = globalScheduler.getClass().getMethod("runDelayed", Plugin.class, Consumer.class, long.class);
+                Object scheduledTask = runDelayedMethod.invoke(globalScheduler, plugin, (Consumer<Object>) st -> task.run(), delay);
+                
                 // Return a dummy BukkitTask for compatibility
-                return new DummyBukkitTask();
+                return new FoliaTaskWrapper(scheduledTask);
             } catch (Exception e) {
-                // Fall back to Bukkit scheduler
+                plugin.getLogger().warning("Failed to use Folia GlobalRegionScheduler for delayed task, falling back to Bukkit scheduler: " + e.getMessage());
+                return Bukkit.getScheduler().runTaskLater(plugin, task, delay);
             }
+        } else {
+            return Bukkit.getScheduler().runTaskLater(plugin, task, delay);
         }
-        
-        // Fallback to traditional Bukkit scheduler
-        return Bukkit.getScheduler().runTaskLater(plugin, task, delayTicks);
     }
     
     /**
-     * Schedule a delayed task at a specific location
+     * Run a task at a specific location (region-aware for Folia)
      */
-    public static void runTaskLaterAtLocation(Plugin plugin, Location location, Runnable task, long delayTicks) {
-        if (hasRegionScheduler() && location != null) {
+    public static void runTask(Plugin plugin, Location location, Runnable task) {
+        if (isFolia() && hasRegionScheduler()) {
             try {
-                Method method = Bukkit.class.getMethod("getRegionScheduler");
-                Object scheduler = method.invoke(null);
-                Method runLaterMethod = scheduler.getClass().getMethod("runDelayed", Plugin.class, Location.class, Runnable.class, long.class);
-                runLaterMethod.invoke(scheduler, plugin, location, task, delayTicks);
-                return;
+                // Use Folia's RegionScheduler
+                Object regionScheduler = Bukkit.class.getMethod("getRegionScheduler").invoke(null);
+                Method runMethod = regionScheduler.getClass().getMethod("run", Plugin.class, Location.class, Consumer.class);
+                runMethod.invoke(regionScheduler, plugin, location, (Consumer<Object>) scheduledTask -> task.run());
             } catch (Exception e) {
-                // Fall back to global task
+                plugin.getLogger().warning("Failed to use Folia RegionScheduler, falling back to Bukkit scheduler: " + e.getMessage());
+                Bukkit.getScheduler().runTask(plugin, task);
             }
+        } else {
+            // For Paper/Spigot, just run the task normally
+            Bukkit.getScheduler().runTask(plugin, task);
         }
-        
-        // Fallback to global delayed task
-        runTaskLater(plugin, task, delayTicks);
     }
     
     /**
-     * Get platform information string
+     * Check if current thread owns the region for the given location
+     * For Folia: Uses Bukkit.isOwnedByCurrentRegion()
+     * For Paper/Spigot: Always returns true (single-threaded)
+     */
+    public static boolean isOwnedByCurrentRegion(Location location) {
+        if (isFolia()) {
+            try {
+                Method method = Bukkit.class.getMethod("isOwnedByCurrentRegion", Location.class);
+                return (Boolean) method.invoke(null, location);
+            } catch (Exception e) {
+                // If method doesn't exist or fails, assume we own the region
+                return true;
+            }
+        } else {
+            // Paper/Spigot is single-threaded, so we always "own" the region
+            return true;
+        }
+    }
+    
+    /**
+     * Get platform information for debugging
      */
     public static String getPlatformInfo() {
         StringBuilder info = new StringBuilder();
-        info.append("Platform: ");
-        
-        if (isFolia()) {
-            info.append("Folia");
-        } else {
-            info.append("Spigot/Paper");
-        }
-        
-        info.append(" | RegionScheduler: ").append(hasRegionScheduler() ? "Available" : "Not Available");
-        info.append(" | GlobalRegionScheduler: ").append(hasGlobalRegionScheduler() ? "Available" : "Not Available");
-        
+        info.append("Platform: ").append(isFolia() ? "Folia" : "Paper/Spigot");
+        info.append(", GlobalRegionScheduler: ").append(hasGlobalRegionScheduler());
+        info.append(", RegionScheduler: ").append(hasRegionScheduler());
+        info.append(", Server Version: ").append(Bukkit.getVersion());
         return info.toString();
     }
     
     /**
-     * Dummy BukkitTask implementation for compatibility
+     * Wrapper class for Folia tasks to provide BukkitTask compatibility
      */
-    private static class DummyBukkitTask implements BukkitTask {
-        @Override
-        public int getTaskId() { return -1; }
+    private static class FoliaTaskWrapper implements BukkitTask {
+        private final Object foliaTask;
+        
+        public FoliaTaskWrapper(Object foliaTask) {
+            this.foliaTask = foliaTask;
+        }
         
         @Override
-        public Plugin getOwner() { return null; }
+        public int getTaskId() {
+            return -1; // Folia tasks don't have traditional IDs
+        }
         
         @Override
-        public boolean isSync() { return true; }
+        public Plugin getOwner() {
+            return null; // Not easily accessible from Folia task
+        }
         
         @Override
-        public boolean isCancelled() { return false; }
+        public boolean isSync() {
+            return true; // Folia tasks are always sync within their region
+        }
         
         @Override
-        public void cancel() { }
+        public boolean isCancelled() {
+            try {
+                Method method = foliaTask.getClass().getMethod("isCancelled");
+                return (Boolean) method.invoke(foliaTask);
+            } catch (Exception e) {
+                return false;
+            }
+        }
+        
+        @Override
+        public void cancel() {
+            try {
+                Method method = foliaTask.getClass().getMethod("cancel");
+                method.invoke(foliaTask);
+            } catch (Exception e) {
+                // Ignore if cancel method doesn't exist
+            }
+        }
     }
 }

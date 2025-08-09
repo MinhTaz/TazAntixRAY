@@ -1,28 +1,22 @@
 name: TazAntixRAY
-version: '1.2.0'
+version: '1.2.1'
 main: com.tazukivn.tazantixray.TazAntixRAYPlugin
 api-version: '1.20'
 folia-supported: true
 load: STARTUP
 depend: [packetevents]
-softdepend: [Geyser-Spigot, floodgate, ViaVersion, ProtocolLib, PlaceholderAPI]
 authors: [TazukiVN]
-description: Advanced Anti-XRay plugin with instant protection, underground security, Bedrock support and multi-platform compatibility
-website: https://github.com/MinhTaz/TazAntixRAY
-# Optional: Add loadbefore if another plugin might interact with PacketEvents early
-# loadbefore: []
-# Optional: Add softdepend if you want to use features from another plugin if it's present
-# softdepend: []
+description: Advanced Anti-XRay plugin with multi-platform support (Folia, Paper, Spigot) for Minecraft 1.20-1.21.8+
+website: https://github.com/TazukiVN/TazAntixRAY
+softdepend: [Geyser, Floodgate]
+
+
 
 commands:
-# You could add a command for debugging or manual refresh if needed
-# ylevelhider:
-#   description: Main command for YLevelHider.
-#   usage: /ylevelhider <args>
-#   permission: ylevelhider.admin
+
   tazantixray:
     description: Main command for TazAntixRAY plugin.
-    usage: /tazantixray <debug|reload|world|checkplayer|info> [args]
+    usage: /tazantixray <debug|reload|world|stats|entities|test> [args]
     permission: tazantixray.admin
     aliases: [tar, antixray]
   tardebug:

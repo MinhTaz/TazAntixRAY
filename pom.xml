@@ -6,16 +6,18 @@
 
     <groupId>com.tazukivn</groupId>
     <artifactId>TazAntixRAY</artifactId>
-    <version>1.2.0</version>
+    <version>1.2.1</version>
     <packaging>jar</packaging>
 
     <name>TazAntixRAY</name>
-    <description>Advanced Anti-XRay plugin with multi-platform support (Folia, Paper, Spigot)</description>
-    <url>https://github.com/MinhTaz/TazAntixRAY</url>
+    <description>Advanced Anti-XRay plugin with multi-platform support (Folia, Paper, Spigot) for Minecraft 1.20+</description>
+    <url>https://github.com/TazukiVN/TazAntixRAY</url>
 
     <properties>
         <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <build>
@@ -53,18 +55,25 @@
     </build>
 
     <repositories>
+        <!-- PaperMC Repository (for Paper and Folia APIs) -->
         <repository>
             <id>papermc-repo</id>
             <url>https://repo.papermc.io/repository/maven-public/</url>
         </repository>
+
+        <!-- Sonatype Repository -->
         <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+
+        <!-- JitPack Repository (for GitHub dependencies) -->
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+
+        <!-- CodeMC Repository (for PacketEvents) -->
         <repository>
             <id>codemc-releases</id>
             <url>https://repo.codemc.io/repository/maven-releases/</url>
@@ -73,24 +82,32 @@
             <id>codemc-snapshots</id>
             <url>https://repo.codemc.io/repository/maven-snapshots/</url>
         </repository>
+
+        <!-- Maven Central -->
+        <repository>
+            <id>central</id>
+            <url>https://repo1.maven.org/maven2/</url>
+        </repository>
     </repositories>
 
     <dependencies>
-        <!-- Paper API for Spigot/Paper support -->
-        <dependency>
-            <groupId>io.papermc.paper</groupId>
-            <artifactId>paper-api</artifactId>
-            <version>1.20.6-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-        </dependency>
-        <!-- Folia API for Folia support -->
+        <!-- Folia API for Folia support (1.20+ to 1.21.x) -->
         <dependency>
             <groupId>dev.folia</groupId>
             <artifactId>folia-api</artifactId>
-            <version>1.20.6-R0.1-SNAPSHOT</version>
+            <version>1.21.6-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
-        <!-- PacketEvents for packet manipulation -->
+
+        <!-- Paper API for Paper/Spigot support (1.20+ to 1.21.x) -->
+        <dependency>
+            <groupId>io.papermc.paper</groupId>
+            <artifactId>paper-api</artifactId>
+            <version>1.21.6-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- PacketEvents for packet manipulation (latest stable version) -->
         <dependency>
             <groupId>com.github.retrooper</groupId>
             <artifactId>packetevents-spigot</artifactId>

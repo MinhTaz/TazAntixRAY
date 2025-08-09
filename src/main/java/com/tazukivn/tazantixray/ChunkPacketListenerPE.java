@@ -78,14 +78,25 @@ public class ChunkPacketListenerPE implements PacketListener {
     private void handleChunkDataPacket(PacketSendEvent event, Player player) {
         listenerDebugLog("Intercepted CHUNK_DATA packet for " + player.getName());
         boolean shouldHide = plugin.playerHiddenState.getOrDefault(player.getUniqueId(), false);
-        listenerDebugLog("Player: " + player.getName() + ", shouldHide: " + shouldHide + " (from playerHiddenState: " + plugin.playerHiddenState.get(player.getUniqueId()) + ")");
+
+        // Check if this is a Bedrock player and needs special handling
+        boolean isBedrockPlayer = false;
+        if (plugin.getGeyserFloodgateSupport() != null) {
+            isBedrockPlayer = plugin.getGeyserFloodgateSupport().isBedrockPlayer(player);
+            if (isBedrockPlayer) {
+                listenerDebugLog("Bedrock player detected: " + player.getName());
+            }
+        }
+
+        listenerDebugLog("Player: " + player.getName() + ", shouldHide: " + shouldHide + ", isBedrock: " + isBedrockPlayer + " (from playerHiddenState: " + plugin.playerHiddenState.get(player.getUniqueId()) + ")");
 
         if (shouldHide) {
-            WrappedBlockState air = plugin.getAirState();
-            if (air == null) {
-                plugin.getLogger().warning("[TazAntixRAY][PacketListener] AIR block state is not available. Cannot modify chunk for " + player.getName());
+            WrappedBlockState replacementBlock = plugin.getReplacementBlockState();
+            if (replacementBlock == null) {
+                plugin.getLogger().warning("[TazAntixRAY][PacketListener] Replacement block state is not available. Cannot modify chunk for " + player.getName());
                 return;
             }
+            listenerDebugLog("Using replacement block: " + plugin.getReplacementBlockType() + " (ID: " + plugin.getReplacementBlockGlobalId() + ") for " + player.getName());
             listenerDebugLog("Proceeding to modify CHUNK_DATA for " + player.getName());
 
             WrapperPlayServerChunkData chunkDataWrapper = null;
@@ -127,15 +138,6 @@ public class ChunkPacketListenerPE implements PacketListener {
             int worldMinY = world.getMinHeight();
             boolean modified = false;
 
-            // Check if limited area hiding is enabled
-            boolean limitedAreaEnabled = AntiXrayUtils.isLimitedAreaEnabled(plugin);
-            int chunkRadius = AntiXrayUtils.getLimitedAreaChunkRadius(plugin);
-            boolean applyOnlyNearPlayer = AntiXrayUtils.shouldApplyLimitedAreaOnlyNearPlayer(plugin);
-
-            // Get chunk coordinates
-            int chunkX = column.getX();
-            int chunkZ = column.getZ();
-
             for (int sectionIndex = 0; sectionIndex < chunkSections.length; sectionIndex++) {
                 BaseChunk section = chunkSections[sectionIndex];
                 if (section == null || section.isEmpty()) {
@@ -147,32 +149,13 @@ public class ChunkPacketListenerPE implements PacketListener {
                     if (currentWorldY <= 16) {
                         for (int relX = 0; relX < 16; relX++) {
                             for (int relZ = 0; relZ < 16; relZ++) {
-                                // Calculate world coordinates
-                                int worldX = (chunkX * 16) + relX;
-                                int worldZ = (chunkZ * 16) + relZ;
-
                                 try {
                                     WrappedBlockState currentState = section.get(relX, yInSection, relZ);
-                                    if (currentState != null && !currentState.equals(air)) {
-                                        // Simple check: hide everything below Y16 when player is above Y31
-                                        boolean shouldHideThisBlock = AntiXrayUtils.shouldHideBlockSimple(plugin, player, currentWorldY);
-
-                                        // Additional check for limited area if enabled
-                                        if (limitedAreaEnabled && applyOnlyNearPlayer && shouldHideThisBlock) {
-                                            boolean inLimitedArea = AntiXrayUtils.isChunkInLimitedArea(player, chunkX, chunkZ, chunkRadius);
-                                            shouldHideThisBlock = shouldHideThisBlock && inLimitedArea;
-                                        }
-
-                                        if (shouldHideThisBlock) {
-                                            // Get replacement block
-                                            WrappedBlockState replacementBlock = AntiXrayUtils.getReplacementBlock(plugin, air);
-
-                                            listenerDebugLog("CHUNK_DATA: Underground Protection - Hiding block at [" + relX + "," + yInSection + "," + relZ + "] in section " + sectionIndex +
-                                                    " (world Y " + currentWorldY + ") from " + currentState.getType().getName() + " to " +
-                                                    replacementBlock.getType().getName() + " for player " + player.getName());
-                                            section.set(relX, yInSection, relZ, replacementBlock);
-                                            modified = true;
-                                        }
+                                    if (currentState != null && !currentState.equals(replacementBlock)) {
+                                        listenerDebugLog("CHUNK_DATA: Changing block at [" + relX + "," + yInSection + "," + relZ + "] in section " + sectionIndex +
+                                                " (world Y " + currentWorldY + ") from " + currentState.getType().getName() + " to " + plugin.getReplacementBlockType() + " for player " + player.getName());
+                                        section.set(relX, yInSection, relZ, replacementBlock);
+                                        modified = true;
                                     }
                                 } catch (Exception e) {
                                     listenerDebugLog("Error setting block in CHUNK_DATA section " + sectionIndex + " at (" + relX + "," + yInSection + "," + relZ + "): " + e.getMessage());
@@ -204,27 +187,18 @@ public class ChunkPacketListenerPE implements PacketListener {
         listenerDebugLog("Intercepted BLOCK_CHANGE packet for " + player.getName());
         boolean shouldHide = plugin.playerHiddenState.getOrDefault(player.getUniqueId(), false);
         if (shouldHide) {
-            WrappedBlockState air = plugin.getAirState();
-            if (air == null) return;
+            WrappedBlockState replacementBlock = plugin.getReplacementBlockState();
+            if (replacementBlock == null) return;
 
             WrapperPlayServerBlockChange wrapper = new WrapperPlayServerBlockChange(event);
             Vector3i blockPos = wrapper.getBlockPosition();
 
-            if (blockPos != null) {
+            if (blockPos != null && blockPos.getY() <= 16) {
                 WrappedBlockState currentState = wrapper.getBlockState();
-                if (currentState != null && !currentState.equals(air)) {
-                    // Simple check: hide everything below Y16 when player is above Y31
-                    boolean shouldHideThisBlock = AntiXrayUtils.shouldHideBlockSimple(plugin, player, blockPos.getY());
-
-                    if (shouldHideThisBlock) {
-                        // Get replacement block
-                        WrappedBlockState replacementBlock = AntiXrayUtils.getReplacementBlock(plugin, air);
-
-                        listenerDebugLog("BLOCK_CHANGE: Underground Protection - Hiding block at " + blockPos.toString() + " from " + currentState.getType().getName() +
-                                " to " + replacementBlock.getType().getName() + " for " + player.getName());
-                        wrapper.setBlockState(replacementBlock);
-                        event.markForReEncode(true);
-                    }
+                if (currentState != null && !currentState.equals(replacementBlock)) {
+                    listenerDebugLog("BLOCK_CHANGE: Changing block at " + blockPos.toString() + " from " + currentState.getType().getName() + " to " + plugin.getReplacementBlockType() + " for " + player.getName());
+                    wrapper.setBlockState(replacementBlock);
+                    event.markForReEncode(true);
                 }
             }
         }
@@ -234,8 +208,8 @@ public class ChunkPacketListenerPE implements PacketListener {
         listenerDebugLog("Intercepted MULTI_BLOCK_CHANGE packet for " + player.getName());
         boolean shouldHide = plugin.playerHiddenState.getOrDefault(player.getUniqueId(), false);
         if (shouldHide) {
-            WrappedBlockState air = plugin.getAirState();
-            if (air == null) return;
+            WrappedBlockState replacementBlock = plugin.getReplacementBlockState();
+            if (replacementBlock == null) return;
 
             WrapperPlayServerMultiBlockChange wrapper = new WrapperPlayServerMultiBlockChange(event);
             boolean modifiedInPacket = false;
@@ -254,17 +228,10 @@ public class ChunkPacketListenerPE implements PacketListener {
                 int currentWorldY = record.getY();
                 int currentBlockId = record.getBlockId();
 
-                // Simple check: hide everything below Y16 when player is above Y31
-                boolean shouldHideThisBlock = AntiXrayUtils.shouldHideBlockSimple(plugin, player, currentWorldY);
-
-                if (shouldHideThisBlock) {
-                    // Get replacement block
-                    WrappedBlockState replacementBlock = AntiXrayUtils.getReplacementBlock(plugin, plugin.getAirState());
-                    int replacementId = replacementBlock.getGlobalId();
-
+                if (currentWorldY <= 16) {
+                    int replacementId = plugin.getReplacementBlockGlobalId();
                     if (currentBlockId != replacementId) {
-                        listenerDebugLog("MULTI_BLOCK_CHANGE: Underground Protection - Hiding block at global ("+record.getX()+","+currentWorldY+","+record.getZ()+") from ID " + currentBlockId +
-                                " to " + replacementBlock.getType().getName() + " (ID: " + replacementId + ") for " + player.getName());
+                        listenerDebugLog("MULTI_BLOCK_CHANGE: Changing block at global ("+record.getX()+","+currentWorldY+","+record.getZ()+") from ID " + currentBlockId + " to " + plugin.getReplacementBlockType() + " for " + player.getName());
                         try {
                             record.setBlockId(replacementId);
                             modifiedInPacket = true;

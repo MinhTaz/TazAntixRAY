@@ -1,35 +1,93 @@
-# General plugin settings
+# ========================================
+# TazAntixRAY Configuration
+# ========================================
+# Advanced Anti-XRay plugin for Folia
+# Developed by TazukiVN
+# Version: 1.2.1
+# ========================================
+
+# ========================================
+# GENERAL SETTINGS
+# ========================================
 settings:
-  # Language for messages (e.g., "en" for English)
+  # Language for messages (en, vi, es, fr, de, etc.)
+  # Language files are located in plugins/TazAntixRAY/lang/
   language: "en"
-  # Enable debug mode for troubleshooting
+
+  # Enable debug mode for detailed logging
+  # Set to true for troubleshooting, false for production
   debug-mode: false
-  # Cooldown in seconds between refreshes to prevent lag
+
+  # Refresh cooldown in seconds to prevent lag from rapid Y-level changes
+  # Higher values = less lag but slower updates
+  # Lower values = faster updates but potential lag
   refresh-cooldown-seconds: 3
 
-# Configure which worlds are affected
+  # View distance for chunk refreshing (in chunks)
+  # Uses server view distance if not specified
+  # view-distance: 10
+
+# ========================================
+# WORLD CONFIGURATION
+# ========================================
 worlds:
-  # List of worlds where anti-xray is enabled
+  # List of worlds where anti-xray is active
+  # Add world names exactly as they appear in your server folder
   whitelist:
     - "world"
     - "mining_world"
+    # - "survival_world"
+    # - "resource_world"
 
-# Main settings for the anti-xray feature
+  # IMPORTANT: Avoid adding these world types:
+  # - Nether worlds (world_nether)
+  # - End worlds (world_the_end)
+  # - Creative worlds
+  # These can cause visual glitches or performance issues
+
+# ========================================
+# ANTI-XRAY SETTINGS
+# ========================================
 antixray:
-  # Start hiding blocks when the player is ABOVE this Y-level
-  # When player is ABOVE Y16: Hide all ores below Y16
-  # When player is AT or BELOW Y16: Show everything normally
-  trigger-y-level: 16.0
-  # Blocks below this Y-level will be hidden (when player is above trigger-y-level)
+  # Y-level threshold for anti-xray protection
+  # When player is ABOVE this level: Hide everything below hide-below-y
+  # When player is AT or BELOW this level: Show everything normally
+  # This replaces the old trigger-y-level and stop-hiding-y settings
+  protection-y-level: 31.0
+
+  # Y-level below which blocks/entities are hidden (when protection is active)
+  # All blocks and entities at this Y-level and below will be hidden
   hide-below-y: 16
 
-  # Settings for the transition zone to make hiding smoother
+  # Transition zone settings
   transition:
-    # This setting is now simplified - no complex transition zones
-    # Player either sees everything (≤Y16) or has ores hidden (>Y16)
-    stop-hiding-y: 16.0
-    # Enable or disable the smooth transition effect
+    # Enable smooth transition between hidden and visible states
     smooth-transition: true
+
+    # Transition zone size (blocks above hide-below-y where effect gradually reduces)
+    transition-zone-size: 5
+
+# ========================================
+# PERFORMANCE SETTINGS
+# ========================================
+# Performance settings are automatically optimized for your platform
+# Folia optimizations are automatically enabled when running on Folia
+performance:
+  # Maximum chunks to process per tick (automatically adjusted per platform)
+  max-chunks-per-tick: 50
+
+  # Maximum entities to process per tick
+  max-entities-per-tick: 100
+
+  # Instant protection settings - load large area immediately
+  instant-protection:
+    enabled: true
+    # Load this many chunks radius instantly when player approaches Y16
+    instant-load-radius: 15
+    # Pre-load protection when player is this many blocks above Y16
+    pre-load-distance: 10
+    # Force immediate chunk refresh (prevents seeing bases)
+    force-immediate-refresh: true
 
   # Limit the anti-xray effect to a small area around the player
   limited-area:
@@ -56,20 +114,9 @@ antixray:
     # This includes: blocks, entities, chests, etc.
     enabled: true
 
-# Performance settings (automatically optimized for your platform)
-performance:
-  max-chunks-per-tick: 50
-  max-entities-per-tick: 100
-  # Instant protection settings - load large area immediately
-  instant-protection:
-    enabled: true
-    # Load this many chunks radius instantly when player approaches Y16
-    instant-load-radius: 15
-    # Pre-load protection when player is this many blocks above Y16
-    pre-load-distance: 10
-    # Force immediate chunk refresh (prevents seeing bases)
-    force-immediate-refresh: true
-
+# ========================================
+# ADVANCED SETTINGS
+# ========================================
 # Advanced settings, usually not necessary to change
 advanced:
   # Packet processing to hide blocks more effectively
@@ -77,37 +124,27 @@ advanced:
     modify-chunk-data: true
     modify-block-changes: true
     modify-multi-block-changes: true
+
   # How to handle player teleports
   teleport-handling:
     delay-ticks: 1
     manage-teleport-states: true
 
-# Compatibility settings for other plugins
+# ========================================
+# COMPATIBILITY SETTINGS
+# ========================================
 compatibility:
+  # Enable compatibility with other anti-xray plugins
   other-antixray-plugins: false
-  world-management-plugins: true
-  permission-plugins: true
-  # Bedrock Edition support via Geyser/Floodgate
-  bedrock-support:
-    enabled: true
-    # Special handling for Bedrock players
-    geyser-compatibility: true
-    floodgate-compatibility: true
-    # Bedrock players need different packet handling
-    bedrock-packet-optimization: true
-    # Auto-detect Floodgate prefixes (leave empty for auto-detection)
-    floodgate-prefixes: []
-    # Examples: ['.', '*', '_', 'BE_', 'Mobile_']
-    # If empty, plugin will auto-detect from Floodgate config
-    auto-detect-floodgate-config: true
-    # Additional detection methods
-    detection-methods:
-      # Check for Floodgate API if available
-      use-floodgate-api: true
-      # Check for Geyser API if available
-      use-geyser-api: true
-      # Fallback UUID pattern detection
-      uuid-pattern-detection: true
 
-# Configuration version, do not modify this line
-config-version: 2
+  # Enable compatibility with world management plugins
+  world-management-plugins: true
+
+  # Enable compatibility with permission plugins
+  permission-plugins: true
+
+# ========================================
+# DO NOT MODIFY BELOW THIS LINE
+# ========================================
+# Configuration version for automatic updates
+config-version: 1
