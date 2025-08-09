@@ -37,7 +37,6 @@ TazAntixRAY is a next-generation anti-cheat plugin designed to prevent X-ray hac
 ### 🎨 **Advanced Hiding Features**
 - **Complete Underground Protection**: Hide everything below Y16 from X-ray and freecam
 - **Limited Area Hiding**: Hide only small areas (3x3 chunks) around players
-- **Block Replacement**: Replace hidden blocks with air, deepslate, or stone
 - **Entity Hiding**: Conceal all entities in hidden areas
 - **Smart Detection**: Normal view when actually mining underground
 
@@ -87,68 +86,66 @@ The compiled JAR will be in the `target/` directory.
 
 ## ⚙️ Configuration
 
-### Basic Setup
+Edit `plugins/TazAntixRAY/config.yml`:
+
 ```yaml
-# Enable anti-xray for specific worlds
+# ========================================
+# GENERAL SETTINGS
+# ========================================
+settings:
+  language: "en"                    # Language: en, vi, etc.
+  debug-mode: false                 # Enable debug logging
+  refresh-cooldown-seconds: 3       # Cooldown between refreshes
+
+# ========================================
+# WORLD CONFIGURATION
+# ========================================
 worlds:
   whitelist:
     - "world"
     - "mining_world"
+    # Add your worlds here
 
-# Basic anti-xray settings
+# ========================================
+# ANTI-XRAY SETTINGS
+# ========================================
 antixray:
-  trigger-y-level: 31.0    # Hide blocks when player is above this Y
-  hide-below-y: 16         # Hide all blocks at or below this Y
-```
+  protection-y-level: 31.0          # Hide blocks when player above this Y
+  hide-below-y: 16                  # Hide blocks at or below this Y
+  transition:
+    smooth-transition: true         # Enable smooth transitions
+    transition-zone-size: 5         # Transition zone size
 
-### NEW: Instant Protection Settings
-```yaml
-# Instant protection - eliminates base visibility
+# ========================================
+# PERFORMANCE SETTINGS
+# ========================================
 performance:
+  max-chunks-per-tick: 50           # Max chunks processed per tick
+  max-entities-per-tick: 100        # Max entities processed per tick
+
+  # Instant protection - load large area immediately
   instant-protection:
     enabled: true
-    instant-load-radius: 15        # Load 15 chunks instantly
-    pre-load-distance: 10          # Start protection 10 blocks early
-    force-immediate-refresh: true  # No delays, instant activation
+    instant-load-radius: 15         # Chunks to load instantly
+    pre-load-distance: 10           # Pre-load when this close to Y16
+    force-immediate-refresh: true
 
-# Bedrock Edition support
-compatibility:
-  bedrock-support:
-    enabled: true
-    geyser-compatibility: true
-    floodgate-compatibility: true
-    # Auto-detect custom Floodgate prefixes
-    floodgate-prefixes: []         # Leave empty for auto-detection
-    auto-detect-floodgate-config: true
-    detection-methods:
-      use-floodgate-api: true      # Use Floodgate API if available
-      use-geyser-api: true         # Use Geyser API if available
-      uuid-pattern-detection: true # Fallback UUID pattern detection
-```
-
-### Advanced Features
-```yaml
-# Limited area hiding (recommended for better base security)
-antixray:
+  # Limited area mode for performance
   limited-area:
-    enabled: true
-    chunk-radius: 3
-    apply-only-near-player: true
+    enabled: false
+    chunk-radius: 3                 # Limit effect to this radius
 
-  # Block replacement options
+  # Block replacement settings
   replacement:
-    block-type: "deepslate"      # air, deepslate, stone
+    block-type: "air"               # Block to replace hidden blocks with
 
-  # Entity hiding
+  # Entity hiding settings
   entities:
-    # Hide all entities in hidden areas (true = hide, false = show)
-    hide-entities: true
+    hide-entities: true             # Hide entities in protected areas
 
-  # Complete underground protection
+  # Underground protection
   underground-protection:
-    # Hide everything below Y16 when player is above Y31
-    # This includes: blocks, entities, chests, etc.
-    enabled: true
+    enabled: true                   # Enable underground protection
 ```
 
 ## 🎮 Commands
@@ -286,7 +283,30 @@ settings:
 - **Bedrock-optimized**: Smaller chunk radius for mobile players
 - **Smart caching**: Improved memory management and player detection caching
 - **Platform-aware optimization**: Better performance across all server types
+## 🆕 What's New in v1.2.1
 
+### Major Changes
+- ✅ **Fix Multi-Platform Support**: Now works on Folia is working
+- ✅ **Enhanced Entity Hiding**: Improved entity management with event-based hiding
+- ✅ **Clean Startup Messages**: Professional loading without spam
+- ✅ **Advanced Commands**: Comprehensive command system with testing tools
+- ✅ **Real-time Config**: Live configuration updates
+- ✅ **Better Performance**: Platform-specific optimizations
+
+### Architecture Improvements
+- ✅ **Platform Detection**: Automatic detection and optimization for each server type
+- ✅ **Modular Design**: Separate optimizers for Folia, Paper, and Spigot
+- ✅ **Enhanced Error Handling**: Better error messages and fallback systems
+- ✅ **Improved Compatibility**: Works with more server configurations
+
+### Fixed Issues
+- ✅ **Chunk visibility bug**: Fixed with improved region-aware chunk handling
+- ✅ **Threading issues**: Resolved with platform-specific threading
+- ✅ **Cross-region operations**: Properly handled with RegionScheduler
+- ✅ **Entity leakage**: Entities now properly hidden with event-based system
+- ✅ **Command issues**: All commands now work correctly with proper permissions
+
+## License
 ## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
